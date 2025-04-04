@@ -131,10 +131,6 @@
   
                   main();
   
-                  $(function () {
-                    setInterval(main, 000);
-                    setInterval(isConnected, 60000);
-                });
 
 
 
