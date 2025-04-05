@@ -1,12 +1,13 @@
 /* styles.css */
 body {
-    font-family: 'Georgia', serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px 20px 60px;
     background-color: #f9f9f9;
     color: #333;
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+    transition: background-color 0.3s, color 0.3s;
+    min-height: 100vh;
 }
 
 .header {
@@ -14,7 +15,7 @@ body {
     margin-bottom: 40px;
     padding-bottom: 20px;
     border-bottom: 1px solid #ddd;
-    position: relative; /* For positioning toggle */
+    position: relative;
 }
 
 .header h1 {
@@ -79,6 +80,35 @@ select {
     margin-right: 8px;
 }
 
+.welcome-text {
+    color: #555;
+    font-size: 1em;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.9em;
+    color: #666;
+    background-color: #f9f9f9;
+    border-top: 1px solid #ddd;
+}
+
+.footer a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
 /* Dark mode styles */
 body.dark-mode {
     background-color: #1a1a1a;
@@ -113,11 +143,25 @@ body.dark-mode .chapter-text {
 }
 
 body.dark-mode .verse-reference {
-    color: #66b3ff; /* Lighter blue for dark mode */
+    color: #66b3ff;
+}
+
+body.dark-mode .welcome-text {
+    color: #bbb;
+}
+
+body.dark-mode .footer {
+    color: #aaa;
+    background-color: #1a1a1a;
+    border-top: 1px solid #444;
+}
+
+body.dark-mode .footer a {
+    color: #36608A;
 }
 
 @media (max-width: 600px) {
-    body { padding: 10px; }
+    body { padding: 10px 10px 60px; }
     .controls { flex-direction: column; align-items: center; }
     select { width: 100%; }
 }

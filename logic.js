@@ -115,19 +115,19 @@ const modeSwitch = document.getElementById('modeSwitch');
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     const isDark = document.body.classList.contains('dark-mode');
-    modeSwitch.textContent = isDark ? '☀️' : '🌙'; // Sun for light, moon for dark
+    modeSwitch.textContent = isDark ? '☀️' : '🌙';
     localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
 }
 
-// Load saved mode preference
+// Load with dark mode as default unless light mode is saved
 const savedMode = localStorage.getItem('darkMode');
-if (savedMode === 'enabled') {
-    document.body.classList.add('dark-mode');
-    modeSwitch.textContent = '☀️';
-} else {
+if (savedMode === 'disabled') {
+    document.body.classList.remove('dark-mode'); // Explicitly light mode
     modeSwitch.textContent = '🌙';
+} else {
+    document.body.classList.add('dark-mode'); // Default to dark mode
+    modeSwitch.textContent = '☀️';
 }
-
 modeSwitch.addEventListener('click', toggleDarkMode);
 
 document.getElementById('bookSelect').addEventListener('change', () => {
