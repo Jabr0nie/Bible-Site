@@ -113,12 +113,18 @@ async function populateChapters() {
     }
 }
 
-// Dark mode toggle functionality
 const modeSwitch = document.getElementById('modeSwitch');
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     const isDark = document.body.classList.contains('dark-mode');
-    modeSwitch.textContent = isDark ? '☀️' : '🌙';
+    const icon = modeSwitch.querySelector('i');
+    if (isDark) {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+    } else {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    }
     localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
 }
 
@@ -126,10 +132,10 @@ function toggleDarkMode() {
 const savedMode = localStorage.getItem('darkMode');
 if (savedMode === 'disabled') {
     document.body.classList.remove('dark-mode'); // Explicitly light mode
-    modeSwitch.textContent = '🌙';
+    modeSwitch.innerHTML = '<i class="fas fa-sun"></i>';
 } else {
     document.body.classList.add('dark-mode'); // Default to dark mode
-    modeSwitch.textContent = '☀️';
+    modeSwitch.innerHTML = '<i class="fas fa-moon"></i>';
 }
 modeSwitch.addEventListener('click', toggleDarkMode);
 

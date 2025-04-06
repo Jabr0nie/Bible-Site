@@ -13,7 +13,6 @@ body {
     margin-bottom: 40px;
     padding-bottom: 2px;
     padding-top: 0px;
-    padding-left: 10px;
     border-bottom: 1px solid #ddd;
     position: relative;
 }
@@ -25,8 +24,9 @@ body {
     color: #444;
 }.mode-toggle {
     position: absolute;
-    top: 10px;
+    top: 20px;
     right: 10px;
+    color: #444;
 }#modeSwitch {
     font-size: 1.5em;
     background: none;
@@ -64,6 +64,7 @@ body {
 }.verse-reference {
     font-weight: bold;
     color: #3498db;
+    /* 3498db */
     margin-right: 8px;
 }.welcome-text {
     color: #555;
@@ -92,9 +93,11 @@ body.dark-mode {
     color: #ddd;
 }body.dark-mode .header {
     background-color: #1a1a1a;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid #ddd;
 }body.dark-mode .header h1 {
-    color: #aaa;
+    color: #36608A;
+}body.dark-mode .title-container {
+    color: #111; /* Sky blue for dark mode */
 }body.dark-mode select {
     background-color: #333;
     color: #ddd;
@@ -108,10 +111,11 @@ body.dark-mode {
     color: #bbb;
 }body.dark-mode .verse-reference {
     color: #66b3ff;
+    /* 66b3ff */
 }body.dark-mode .welcome-text {
     color: #bbb;
 }body.dark-mode .footer {
-    color: #aaa;
+    color: #ddd;
     background-color: #1a1a1a;
     border-top: 1px solid #444;
 }body.dark-mode .footer a {
@@ -128,4 +132,17 @@ body.dark-mode {
 }
 body.dark-mode .header .subtitle {
     color: #bbb;
+}
+/* reader.css (relevant excerpt) */
+#modeSwitch {
+    font-size: 1.5em;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: #444; /* Default color for light mode (affects <i>) */
+}
+
+body.dark-mode #modeSwitch {
+    color: #bbb; /* Gold for dark mode */
 }
