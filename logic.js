@@ -53,6 +53,9 @@ function displayVerses(verses) {
 async function loadVerses() {
     const bookId = document.getElementById('bookSelect').value;
     const chapter = document.getElementById('chapterSelect').value;
+    const lastButton = document.getElementById('lastButton');
+    const nextButton = document.getElementById('nextButton');
+
     if (bookId && chapter) {
         try {
             const verses = await getVersesFromContract(bookId, chapter);
