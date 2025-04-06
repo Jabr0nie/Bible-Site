@@ -64,6 +64,37 @@ const ABI = [
 			},
 			{
 				"indexed": false,
+				"internalType": "string",
+				"name": "oldName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "newName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "chapterCount",
+				"type": "uint256"
+			}
+		],
+		"name": "BookUpdated",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "bookId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
 				"internalType": "uint256",
 				"name": "chapter",
 				"type": "uint256"
@@ -108,6 +139,29 @@ const ABI = [
 			}
 		],
 		"name": "importChapter",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "bookId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "chapterCount",
+				"type": "uint256"
+			}
+		],
+		"name": "updateBook",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"

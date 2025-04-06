@@ -2,7 +2,7 @@
 
 const provider = new Web3.providers.HttpProvider('https://mainnet.conflux.validationcloud.io/v1/-IRnLxSE8r-OSt3NvVAUGK0pnUTVHF5vkCIR8Fvnpt0');
 const web3 = new Web3(provider);
-const BibleAddress = '0x032159631daE3397B81d5B2B39cA5A8A3dE52502';
+const BibleAddress = '0x9Aa6964cddC6198AF57A9bAfbd53AedCC5Dd813B';
 const bibleContract = new web3.eth.Contract(ABI, BibleAddress);
 
 // Debug: Test contract interaction
