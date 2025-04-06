@@ -1,12 +1,18 @@
 /* styles.css */
+html {
+    height: 100%; /* Ensures body can stretch to viewport */
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0 auto;
-    padding: 20px 20px 60px;
+    padding: 20px 20px 20px; /* Reduced bottom padding since footer handles its own */
     background-color: #f9f9f9;
     color: #333;
     transition: background-color 0.3s, color 0.3s;
-    min-height: 100vh;
+    min-height: 100vh; /* Already good */
+    display: flex; /* Make body a flex container */
+    flex-direction: column; /* Stack children vertically */
 }.header {
     width: 100%;
     text-align: center;
@@ -15,6 +21,9 @@ body {
     padding-top: 0px;
     border-bottom: 1px solid #ddd;
     position: relative;
+}
+main {
+    flex: 1; /* Grows to fill space, pushes footer down */
 }
 .title-container {
     text-align: left; /* Align text left within container */
@@ -72,10 +81,7 @@ body {
     line-height: 1.5;
     text-align: center;
 }.footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+    width: 100%; /* Still full-width */
     text-align: center;
     padding: 10px 0;
     font-size: 0.9em;
@@ -95,7 +101,7 @@ body.dark-mode {
     background-color: #1a1a1a;
     border-bottom: 1px solid #ddd;
 }body.dark-mode .header h1 {
-    color: #36608A;
+    color: #aaa;
 }body.dark-mode .title-container {
     color: #111; /* Sky blue for dark mode */
 }body.dark-mode select {
