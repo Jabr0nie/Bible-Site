@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8" name="viewport"
-			content="width=device-width, initial-scale=1.0">
-		<title>0xScripture</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>About 0xBible.faith - Bible on Blockchain</title>
+		<meta name="description" content="Learn why we stored the Bible on Conflux eSpace, a decentralized blockchain, to preserve scripture forever.">
+		<meta name="keywords" content="Bible on blockchain, Conflux eSpace, decentralized scripture, 0xBible">
 		<script language="javascript" type="text/javascript"
 			src="web3.min.js"></script>
 		<script language="javascript" type="text/javascript" src="Abi.js"></script>
@@ -12,15 +14,27 @@
 	</head>
 	<body>
 		<main>
-		<div class="header">
-			<div class="title-container">
-			<h1>0xScripture</h1>
-			<p class="subtitle">A Blockchain Bible Reader</p>
-			</div>
-			<div class="mode-toggle">
-				<button id="modeSwitch" aria-label="Toggle dark mode"><i class="fa fa-moon"></i></button>
-			</div>
-		</div>
+			<div class="header">
+				<div class="title-container">
+					<a href="/" class="title-link">
+				  		<h1>0xBible</h1>
+					</a>
+				  
+				</div>
+				<button class="hamburger-toggle" aria-label="Toggle menu">
+				  <span class="hamburger-icon"><i class="fa fa-bars"></i>
+
+				  </span> <!-- ☰ -->
+				  <span class="hamburger-close" style="display: none;">&times;</span> <!-- × -->
+				</button>
+				<nav class="hamburger-menu">
+				  <a href="about.html">About</a>
+				  <!-- Add shop/donate later -->
+				</nav>
+				<div class="mode-toggle">
+				  <button id="modeSwitch" aria-label="Toggle dark mode"><i class="fa fa-moon"></i></button>
+				</div>
+			  </div>
 	
 		<div class="controls">
 			<select id="bookSelect">

@@ -6,7 +6,8 @@ html {
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0 auto;
-    padding: 20px 20px 20px; /* Reduced bottom padding since footer handles its own */
+    padding-left: 20px;
+    padding-right: 20px; /* Reduced bottom padding since footer handles its own */
     background-color: #f9f9f9;
     color: #333;
     transition: background-color 0.3s, color 0.3s;
@@ -14,13 +15,25 @@ body {
     display: flex; /* Make body a flex container */
     flex-direction: column; /* Stack children vertically */
 }.header {
-    width: 100%;
+    width: 80%;
     text-align: center;
     margin-bottom: 40px;
     padding-bottom: 2px;
-    padding-top: 0px;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding-top: 10px;
     border-bottom: 1px solid #ddd;
     position: relative;
+    background-color: #f9f9f9; /* Match body */
+    transition: background-color 0.3s;
+}
+
+/* Scale the logo */
+.logo {
+    max-height: 50px; /* Constrain height for desktop */
+    width: auto; /* Preserve aspect ratio */
+    display: block;
+    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5)); /* Add shadow for contrast */
 }
 main {
     flex: 1; /* Grows to fill space, pushes footer down */
@@ -81,9 +94,11 @@ main {
     line-height: 1.5;
     text-align: center;
 }.footer {
-    width: 100%; /* Still full-width */
+    width: 80%; /* Still full-width */
     text-align: center;
     padding: 10px 0;
+    margin-left: 10%;
+    margin-right: 10%;
     font-size: 0.9em;
     color: #666;
     background-color: #f9f9f9;
@@ -99,7 +114,7 @@ body.dark-mode {
     color: #ddd;
 }body.dark-mode .header {
     background-color: #1a1a1a;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #444;
 }body.dark-mode .header h1 {
     color: #aaa;
 }body.dark-mode .title-container {
@@ -128,6 +143,8 @@ body.dark-mode {
     color: #36608A;
 }@media (max-width: 600px) {
     body { padding: 10px 10px 60px; }
+    .header { margin-left: 0%; margin-right: 0%; width: 100%}
+    .footer { margin-left: 0%; margin-right: 0%; width: 100%}
     .controls { flex-direction: column; align-items: center; }
     select { width: 100%; }
 }
@@ -151,4 +168,265 @@ body.dark-mode .header .subtitle {
 
 body.dark-mode #modeSwitch {
     color: #bbb; /* Gold for dark mode */
+}
+
+
+.about-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .about-container p {
+    color: #555;
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 15px;
+  }
+  
+  .about-container a {
+    color: #3498db;
+    text-decoration: none;
+  }
+  
+  .about-container a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Dark mode */
+  body.dark-mode .about-container {
+    background-color: #2a2a2a;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  }
+  
+  body.dark-mode .about-container p {
+    color: #bbb;
+  }
+  
+  body.dark-mode .about-container a {
+    color: #66b3ff;
+  }
+
+
+
+  /* Hamburger toggle button */
+.hamburger-toggle {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    color: #444;
+    cursor: pointer;
+    padding: 5px;
+    position: absolute;
+    top: 20px;
+    right: 60px; /* Space for mode-toggle */
+    transition: color 0.3s;
+  }
+  
+  .hamburger-toggle:hover {
+    color: #3498db; /* Match your blue */
+  }
+  
+  /* Menu container */
+  .hamburger-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 10px 0; /* Vertical padding only */
+    min-width: 150px;
+    z-index: 20; /* Increased for safety */
+    text-align: left; /* Align text left */
+}
+
+.hamburger-menu.active {
+    display: flex;
+}
+
+.hamburger-menu a {
+    color: #333;
+    text-decoration: none;
+    padding: 12px 15px; /* Adjusted: less right/left padding */
+    font-size: 1.2em; /* Bigger: ~19px */
+    font-weight: bold; /* Bolder */
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.hamburger-menu a:hover {
+    background-color: #f0f0f0;
+    color: #3498db;
+}
+
+body.dark-mode .hamburger-menu {
+    background-color: #2a2a2a;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    color: #bbb;
+}
+
+body.dark-mode .hamburger-menu a {
+    color: #ddd;
+}
+
+  /* Hamburger toggle button */
+body.dark-mode .hamburger-toggle {
+    color: #bbb;
+  }
+  
+body.dark-mode .hamburger-menu a:hover {
+    background-color: #3a3a3a;
+    color: #66b3ff;
+}
+
+body.dark-mode .hamburger-toggle:hover {
+    color: #3498db; /* Match your blue */
+  }
+  
+    #modeSwitch {
+        font-size: 1.5em;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        color: #444; /* Light mode */
+        transition: color 0.3s; /* Match hamburger */
+      }
+      
+      #modeSwitch:hover {
+        color: #3498db; /* Light mode hover, same as hamburger */
+      }
+      
+      body.dark-mode #modeSwitch {
+        color: #bbb; /* Dark mode */
+      }
+      
+      body.dark-mode #modeSwitch:hover {
+        color: #66b3ff; /* Dark mode hover, same as hamburger */
+      }
+  
+  /* Mobile adjustments */
+  @media (max-width: 600px) {
+    .hamburger-menu {
+        right: 5px;
+        min-width: 130px; /* Slightly wider for bigger text */
+    }
+    .hamburger-menu a {
+        padding: 10px 12px; /* Tighter on mobile */
+        font-size: 1.1em; /* Slightly smaller but still bold */
+    }
+}
+
+  .title-link {
+    text-decoration: none; /* No underline */
+    color: inherit; /* Inherits h1’s color (#444 or #36608A) */
+    transition: color 0.3s; /* Match hamburger/mode toggle */
+  }
+  
+  .title-link:hover {
+    color: #3498db; /* Light mode hover, same as hamburger */
+  }
+  
+  body.dark-mode .title-link {
+    color: inherit; /* Inherits dark mode h1 (#36608A) */
+  }
+  
+  body.dark-mode .title-link:hover {
+    color: #66b3ff; /* Dark mode hover, same as hamburger */
+  }
+  
+  /* Ensure h1 doesn’t override */
+  .header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    color: #444;
+  }
+  
+  body.dark-mode .header h1 {
+    color: #36608A;
+  }
+
+  .about-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  /* Reuse existing classes */
+  .about-container .chapter-title {
+    font-size: 1.5em;
+    color: #2c3e50;
+    margin-bottom: 15px;
+  }
+  
+  .about-container .chapter-text {
+    color: #555;
+    font-size: 1em;
+    line-height: 1.5; /* Match home’s line-height: 2 slightly adjusted */
+    margin-bottom: 15px;
+  }
+  
+  .about-container .verse-reference {
+    font-weight: bold;
+    color: #36608A;
+    text-decoration: none;
+    margin-right: 0px;
+  }
+  
+  .about-container .verse-reference:hover {
+    text-decoration: underline;
+  }
+  
+  /* Dark mode */
+  body.dark-mode .about-container {
+    background-color: #2a2a2a;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  }
+  
+  body.dark-mode .about-container .chapter-title {
+    color: #ddd;
+  }
+  
+  body.dark-mode .about-container .chapter-text {
+    color: #bbb;
+  }
+  
+  body.dark-mode .about-container .verse-reference {
+    color: #36608A;
+  }
+
+  .about-container .verse-reference {
+    font-weight: 500; /* Less bold, medium */
+    font-size: 0.95em; /* Smaller, ~15px */
+    color: #36608A;
+    text-decoration: none;
+}
+
+.about-container .verse-reference:hover {
+    text-decoration: underline;
+}
+
+body.dark-mode .about-container .verse-reference {
+    color: #4581bd;
+}
+
+/* Ensure home page verse numbers stay bold */
+.verse-reference {
+    font-weight: bold;
+    color: #3498db;
+    margin-right: 0px;
+}
+
+body.dark-mode .verse-reference {
+    color: #66b3ff;
 }

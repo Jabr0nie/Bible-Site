@@ -113,6 +113,7 @@ async function populateChapters() {
     }
 }
 
+// Dark mode toggle
 const modeSwitch = document.getElementById('modeSwitch');
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
@@ -128,22 +129,101 @@ function toggleDarkMode() {
     localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
 }
 
-// Load with dark mode as default unless light mode is saved
+// Load saved mode
 const savedMode = localStorage.getItem('darkMode');
 if (savedMode === 'disabled') {
-    document.body.classList.remove('dark-mode'); // Explicitly light mode
+    document.body.classList.remove('dark-mode');
     modeSwitch.innerHTML = '<i class="fas fa-sun"></i>';
 } else {
-    document.body.classList.add('dark-mode'); // Default to dark mode
+    document.body.classList.add('dark-mode');
     modeSwitch.innerHTML = '<i class="fas fa-moon"></i>';
 }
 modeSwitch.addEventListener('click', toggleDarkMode);
 
+// Verse sharing
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('verse-reference')) {
+        const book = e.target.dataset.book;
+        const chapter = e.target.dataset.chapter;
+        const verse = e.target.dataset.verse;
+        const url = `https://0xbible.faith/verse?book=${encodeURIComponent(book)}&chapter=${chapter}&verse=${verse}`;
+
+        navigator.clipboard.writeText(url)
+            .then(() => {
+                alert('Verse link copied! Paste to share.');
+            })
+            .catch(err => {
+                console.error('Copy failed:', err);
+                if (navigator.share) {
+                    navigator.share({
+                        title: `${book} ${chapter}:${verse}`,
+                        text: `Read ${book} ${chapter}:${verse} on 0xBible.faith`,
+                        url: url
+                    }).catch(err => console.error('Share failed:', err));
+                } else {
+                    alert('Copy failed. Share this link: ' + url);
+                }
+            });
+    }
+});
+
+// Load verse from URL
+window.addEventListener('load', () => {
+    const params = new URLSearchParams(window.location.search);
+    const book = params.get('book');
+    const chapter = params.get('chapter');
+    const verse = params.get('verse');
+    if (book && chapter && verse) {
+        // Find bookId from book name
+        bibleContract.methods.bookCount().call()
+            .then(count => {
+                const promises = [];
+                for (let i = 0; i < Number(count); i++) {
+                    promises.push(bibleContract.methods.getBookInfo(i).call());
+                }
+                return Promise.all(promises);
+            })
+            .then(books => {
+                const bookInfo = books.find(b => b.name.toLowerCase() === book.toLowerCase());
+                if (bookInfo) {
+                    const bookId = books.indexOf(bookInfo);
+                    getVersesFromContract(bookId, chapter)
+                        .then(verses => {
+                            displayVerses(verses, bookInfo.name, bookId, chapter);
+                            // Scroll to specific verse
+                            const verseEl = document.querySelector(`.verse-reference[data-verse="${verse}"]`);
+                            if (verseEl) verseEl.scrollIntoView({ behavior: 'smooth' });
+                        });
+                }
+            })
+            .catch(err => console.error('URL load error:', err));
+    }
+});
+
+// Event listeners
 document.getElementById('bookSelect').addEventListener('change', () => {
     populateChapters();
     loadVerses();
 });
 document.getElementById('chapterSelect').addEventListener('change', loadVerses);
+
+// Hamburger menu
+document.querySelector('.hamburger-toggle').addEventListener('click', () => {
+    const menu = document.querySelector('.hamburger-menu');
+    const icon = document.querySelector('.hamburger-icon');
+    const close = document.querySelector('.hamburger-close');
+    menu.classList.toggle('active');
+    icon.style.display = menu.classList.contains('active') ? 'none' : 'block';
+    close.style.display = menu.classList.contains('active') ? 'block' : 'none';
+});
+
+document.querySelectorAll('.hamburger-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        document.querySelector('.hamburger-menu').classList.remove('active');
+        document.querySelector('.hamburger-icon').style.display = 'block';
+        document.querySelector('.hamburger-close').style.display = 'none';
+    });
+});
 
 window.onload = function() {
     populateBooks();
