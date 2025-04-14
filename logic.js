@@ -184,7 +184,8 @@ document.addEventListener('click', async (e) => {
             // Construct the tweet with the verse text, adding a line break
             const verseReference = `${book} ${chapter}:${verse}`;
             const url = 'https://0xbible.faith'; // Link to base URL for preview
-            const tweetText = `"${text}" - ${verseReference} #blockchainBible #Conflux ${url}`;
+            const tweetText = `"${text}" - ${verseReference}                                                       
+                                                                                                         #blockchainBible #Conflux ${url}`;
             const tweetUrl = `https://x.com/intent/post?text=${encodeURIComponent(tweetText)}`;
 
             // Debug log
