@@ -1,4 +1,4 @@
-// logic.js
+
 
 const provider = new Web3.providers.HttpProvider('https://mainnet.conflux.validationcloud.io/v1/-IRnLxSE8r-OSt3NvVAUGK0pnUTVHF5vkCIR8Fvnpt0');
 const web3 = new Web3(provider);
@@ -10,78 +10,61 @@ bibleContract.methods.bookCount().call()
     .then(result => console.log('bookCount:', result))
     .catch(error => console.error('bookCount error:', error));
 
-    async function getVersesFromContract(bookId, chapter) {
-        try {
-            const verseCount = await bibleContract.methods.getChapterInfo(bookId, chapter).call();
-            console.log('getVersesFromContract - BookId:', bookId, 'Chapter:', chapter, 'VerseCount:', verseCount); // Debug log
-            const verses = [];
-            for (let verse = 1; verse <= verseCount; verse++) {
-                const result = await bibleContract.methods.getVerse(bookId, chapter, verse).call();
-                console.log('getVerse result:', result);
-                const [verseNumber, text] = [result[0], result[1]];
-                console.log(`${chapter}:${verseNumber}`, text);
-                verses.push({ reference: `${chapter}:${verseNumber}`, text });
-            }
-            return verses;
-        } catch (error) {
-            console.error('Error fetching verses:', error);
-            throw error;
+async function getVersesFromContract(bookId, chapter) {
+    try {
+        const verseCount = await bibleContract.methods.getChapterInfo(bookId, chapter).call();
+        const verses = [];
+        for (let verse = 1; verse <= verseCount; verse++) {
+            const result = await bibleContract.methods.getVerse(bookId, chapter, verse).call();
+            console.log('getVerse result:', result);
+            const [verseNumber, text] = [result[0], result[1]];
+            console.log(`${chapter}:${verseNumber}`, text);
+            verses.push({ reference: `${chapter}:${verseNumber}`, text });
         }
+        return verses;
+    } catch (error) {
+        console.error('Error fetching verses:', error);
+        throw error;
     }
+}
 
-    async function displayVerses(verses, bookName, bookId, chapter) {
-        const container = document.getElementById('versesContainer');
-        if (!container) {
-            console.error('versesContainer element not found');
-            return;
-        }
-    
-        container.innerHTML = '';
-    
-        const paragraph = document.createElement('p');
-        paragraph.className = 'chapter-text';
-    
-        const stitchedText = verses.map(verse => {
-            const [ch, vs] = verse.reference.split(':');
-            console.log('displayVerses - Verse:', verse.reference, 'Book:', bookName, 'BookId:', bookId, 'Chapter:', ch, 'Verse:', vs); // Debug log
-            return `<span class="verse-reference" data-book="${bookName}" data-book-id="${bookId}" data-chapter="${ch}" data-verse="${vs}">${verse.reference}</span> ${verse.text}`;
-        }).join(' ');
-    
-        paragraph.innerHTML = stitchedText;
-        container.appendChild(paragraph);
-    
-        const title = document.createElement('h2');
-        title.textContent = `${bookName} Chapter ${chapter}`;
-        title.className = 'chapter-title';
-        container.insertBefore(title, paragraph);
-    }
-    async function loadVerses() {
-        const bookSelect = document.getElementById('bookSelect');
-        const chapterSelect = document.getElementById('chapterSelect');
-    
-        if (!bookSelect || !chapterSelect) {
-            console.error('Missing bookSelect or chapterSelect elements');
-            return;
-        }
-    
-        const bookId = bookSelect.value;
-        const bookName = bookSelect.options[bookSelect.selectedIndex]?.text || '';
-        const chapter = chapterSelect.value;
-    
-        console.log('loadVerses - BookId:', bookId, 'BookName:', bookName, 'Chapter:', chapter); // Debug log
-    
-        if (bookId && chapter && bookName) {
-            try {
-                const verses = await getVersesFromContract(bookId, chapter);
-                await displayVerses(verses, bookName, bookId, chapter);
-            } catch (error) {
-                document.getElementById('versesContainer').innerHTML = '<p>Error loading verses.</p>';
-                console.error('Load verses error:', error);
-            }
-        } else {
-            console.error('Missing required values:', { bookId, bookName, chapter });
+async function displayVerses(verses, bookName, bookId, chapter) {
+    const container = document.getElementById('versesContainer');
+    container.innerHTML = '';
+
+    const paragraph = document.createElement('p');
+    paragraph.className = 'chapter-text';
+
+    const stitchedText = verses.map(verse => {
+        const [ch, vs] = verse.reference.split(':');
+        return `<span class="verse-reference" data-book="${bookName}" data-book-id="${bookId}" data-chapter="${ch}" data-verse="${vs}">${verse.reference}</span> ${verse.text}`;
+    }).join(' ');
+
+    paragraph.innerHTML = stitchedText;
+    container.appendChild(paragraph);
+
+    const title = document.createElement('h2');
+    title.textContent = `${bookName} Chapter ${chapter}`;
+    title.className = 'chapter-title';
+    container.insertBefore(title, paragraph);
+}
+
+async function loadVerses() {
+    const bookSelect = document.getElementById('bookSelect');
+    const bookId = bookSelect.value;
+    const bookName = bookSelect.options[bookSelect.selectedIndex]?.text || '';
+    const chapter = document.getElementById('chapterSelect').value;
+
+    if (bookId && chapter && bookName) {
+        try {
+            const verses = await getVersesFromContract(bookId, chapter);
+            await displayVerses(verses, bookName, bookId, chapter);
+        } catch (error) {
+            document.getElementById('versesContainer').innerHTML = '<p>Error loading verses.</p>';
+            console.error('Load verses error:', error);
         }
     }
+}
 
 async function populateBooks() {
     const bookSelect = document.getElementById('bookSelect');
@@ -163,29 +146,17 @@ document.addEventListener('click', (e) => {
         const book = e.target.dataset.book;
         const chapter = e.target.dataset.chapter;
         const verse = e.target.dataset.verse;
-
-        // Debug log
-        console.log('Verse clicked - Book:', book, 'Chapter:', chapter, 'Verse:', verse);
-
-        // Validate data attributes
-        if (!book || !chapter || !verse || book === 'undefined' || chapter === 'undefined' || verse === 'undefined') {
-            console.error('Invalid verse data attributes:', { book, chapter, verse });
-            alert('Unable to share verse: Invalid data. Please try again or refresh the page.');
-            return;
-        }
-
         const url = `https://0xbible.faith/verse?book=${encodeURIComponent(book)}&chapter=${chapter}&verse=${verse}`;
-        console.log('Generated URL:', url); // Debug log
-
+        
         // Construct the X intent URL
         const tweetText = `${book} ${chapter}:${verse} on 0xBible.faith - Scripture on the blockchain! ${url} #blockchainBible #Conflux`;
-        console.log('Tweet Text:', tweetText); // Debug log
         const tweetUrl = `https://x.com/intent/post?text=${encodeURIComponent(tweetText)}`;
         
         // Open the X post in a new tab/window
         window.open(tweetUrl, '_blank');
     }
 });
+
 // Load verse from URL
 window.addEventListener('load', () => {
     const params = new URLSearchParams(window.location.search);
@@ -193,7 +164,6 @@ window.addEventListener('load', () => {
     const chapter = params.get('chapter');
     const verse = params.get('verse');
     if (book && chapter && verse) {
-        // Find bookId from book name
         bibleContract.methods.bookCount().call()
             .then(count => {
                 const promises = [];
@@ -209,7 +179,6 @@ window.addEventListener('load', () => {
                     getVersesFromContract(bookId, chapter)
                         .then(verses => {
                             displayVerses(verses, bookInfo.name, bookId, chapter);
-                            // Scroll to specific verse
                             const verseEl = document.querySelector(`.verse-reference[data-verse="${verse}"]`);
                             if (verseEl) verseEl.scrollIntoView({ behavior: 'smooth' });
                         });
@@ -219,31 +188,24 @@ window.addEventListener('load', () => {
     }
 });
 
-// Event listeners
-document.getElementById('bookSelect').addEventListener('change', () => {
-    populateChapters();
-    loadVerses();
-});
-document.getElementById('chapterSelect').addEventListener('change', loadVerses);
+// Event listeners for verse selection (only if elements exist)
+const bookSelect = document.getElementById('bookSelect');
+const chapterSelect = document.getElementById('chapterSelect');
 
-// Hamburger menu
-document.querySelector('.hamburger-toggle').addEventListener('click', () => {
-    const menu = document.querySelector('.hamburger-menu');
-    const icon = document.querySelector('.hamburger-icon');
-    const close = document.querySelector('.hamburger-close');
-    menu.classList.toggle('active');
-    icon.style.display = menu.classList.contains('active') ? 'none' : 'block';
-    close.style.display = menu.classList.contains('active') ? 'block' : 'none';
-});
-
-document.querySelectorAll('.hamburger-menu a').forEach(link => {
-    link.addEventListener('click', () => {
-        document.querySelector('.hamburger-menu').classList.remove('active');
-        document.querySelector('.hamburger-icon').style.display = 'block';
-        document.querySelector('.hamburger-close').style.display = 'none';
+if (bookSelect) {
+    bookSelect.addEventListener('change', () => {
+        populateChapters();
+        loadVerses();
     });
-});
+}
 
+if (chapterSelect) {
+    chapterSelect.addEventListener('change', loadVerses);
+}
+
+// Populate books on load (only if bookSelect exists)
 window.onload = function() {
-    populateBooks();
+    if (bookSelect) {
+        populateBooks();
+    }
 };
