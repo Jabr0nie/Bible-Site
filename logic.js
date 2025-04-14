@@ -157,7 +157,7 @@ if (savedMode === 'disabled') {
 }
 modeSwitch.addEventListener('click', toggleDarkMode);
 
-// Verse sharing - Post verse text directly to X with line break
+// Verse sharing - Post verse text directly to X with line break and truncation
 document.addEventListener('click', async (e) => {
     if (e.target.classList.contains('verse-reference')) {
         const book = e.target.dataset.book;
@@ -184,8 +184,21 @@ document.addEventListener('click', async (e) => {
             // Construct the tweet with the verse text, adding a line break
             const verseReference = `${book} ${chapter}:${verse}`;
             const url = 'https://0xbible.faith'; // Link to base URL for preview
-            const tweetText = `"${text}" - ${verseReference}                                                       
-                                                                                                         #blockchainBible #Conflux ${url}`;
+            const hashtags = '#blockchainBible #Conflux';
+
+            // Base length without verse text (include space for quotes and newline)
+            const baseText = `" - ${verseReference}\n${hashtags} ${url}"`;
+            const baseLength = baseText.length; // Length of fixed parts
+
+            // X character limit is 280; reserve space for the verse text
+            const maxVerseLength = 280 - baseLength - 3; // Reserve 3 characters for "..."
+            let tweetVerseText = text;
+            if (tweetVerseText.length > maxVerseLength) {
+                tweetVerseText = tweetVerseText.substring(0, maxVerseLength) + '...';
+            }
+
+            // Use literal \n for the line break
+            const tweetText = `"${tweetVerseText}" - ${verseReference}\n${hashtags} ${url}`;
             const tweetUrl = `https://x.com/intent/post?text=${encodeURIComponent(tweetText)}`;
 
             // Debug log
@@ -199,7 +212,6 @@ document.addEventListener('click', async (e) => {
         }
     }
 });
-
 // Load verse from URL
 window.addEventListener('load', () => {
     const params = new URLSearchParams(window.location.search);
