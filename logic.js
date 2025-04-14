@@ -157,33 +157,45 @@ if (savedMode === 'disabled') {
 }
 modeSwitch.addEventListener('click', toggleDarkMode);
 
-// Verse sharing - Open X post
-document.addEventListener('click', (e) => {
+// Verse sharing - Post verse text directly to X
+document.addEventListener('click', async (e) => {
     if (e.target.classList.contains('verse-reference')) {
         const book = e.target.dataset.book;
+        const bookId = e.target.dataset.bookId;
         const chapter = e.target.dataset.chapter;
         const verse = e.target.dataset.verse;
 
         // Debug log
-        console.log('Verse clicked - Book:', book, 'Chapter:', chapter, 'Verse:', verse);
+        console.log('Verse clicked - Book:', book, 'BookId:', bookId, 'Chapter:', chapter, 'Verse:', verse);
 
         // Validate data attributes
-        if (!book || !chapter || !verse || book === 'undefined' || chapter === 'undefined' || verse === 'undefined') {
-            console.error('Invalid verse data attributes:', { book, chapter, verse });
+        if (!book || !bookId || !chapter || !verse || book === 'undefined' || bookId === 'undefined' || chapter === 'undefined' || verse === 'undefined') {
+            console.error('Invalid verse data attributes:', { book, bookId, chapter, verse });
             alert('Unable to share verse: Invalid data. Please try again or refresh the page.');
             return;
         }
 
-        const url = `https://0xbible.faith/verse?book=${encodeURIComponent(book)}&chapter=${chapter}&verse=${verse}`;
-        console.log('Generated URL:', url); // Debug log
+        try {
+            // Fetch the verse text from the contract
+            const result = await bibleContract.methods.getVerse(bookId, chapter, verse).call();
+            const [verseNumber, text] = [result[0], result[1]];
+            console.log('Fetched verse text:', text);
 
-        // Construct the X intent URL
-        const tweetText = `${book} ${chapter}:${verse} on 0xBible.faith - Scripture on the blockchain! ${url} #blockchainBible #Conflux`;
-        console.log('Tweet Text:', tweetText); // Debug log
-        const tweetUrl = `https://x.com/intent/post?text=${encodeURIComponent(tweetText)}`;
-        
-        // Open the X post in a new tab/window
-        window.open(tweetUrl, '_blank');
+            // Construct the tweet with the verse text
+            const verseReference = `${book} ${chapter}:${verse}`;
+            const url = 'https://0xbible.faith'; // Link to base URL for preview
+            const tweetText = `"${text}" - ${verseReference} on 0xBible.faith #blockchainBible #Conflux ${url}`;
+            const tweetUrl = `https://x.com/intent/post?text=${encodeURIComponent(tweetText)}`;
+
+            // Debug log
+            console.log('Tweet Text:', tweetText);
+
+            // Open the X post in a new tab/window
+            window.open(tweetUrl, '_blank');
+        } catch (error) {
+            console.error('Error fetching verse text:', error);
+            alert('Unable to fetch verse text. Please try again.');
+        }
     }
 });
 // Load verse from URL
