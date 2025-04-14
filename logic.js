@@ -157,7 +157,7 @@ if (savedMode === 'disabled') {
 }
 modeSwitch.addEventListener('click', toggleDarkMode);
 
-// Verse sharing - Post verse text directly to X
+// Verse sharing - Post verse text directly to X with line break
 document.addEventListener('click', async (e) => {
     if (e.target.classList.contains('verse-reference')) {
         const book = e.target.dataset.book;
@@ -181,10 +181,10 @@ document.addEventListener('click', async (e) => {
             const [verseNumber, text] = [result[0], result[1]];
             console.log('Fetched verse text:', text);
 
-            // Construct the tweet with the verse text
+            // Construct the tweet with the verse text, adding a line break
             const verseReference = `${book} ${chapter}:${verse}`;
             const url = 'https://0xbible.faith'; // Link to base URL for preview
-            const tweetText = `"${text}" - ${verseReference} on 0xBible.faith #blockchainBible #Conflux ${url}`;
+            const tweetText = `"${text}" - ${verseReference}%0A#blockchainBible #Conflux ${url}`;
             const tweetUrl = `https://x.com/intent/post?text=${encodeURIComponent(tweetText)}`;
 
             // Debug log
@@ -198,6 +198,7 @@ document.addEventListener('click', async (e) => {
         }
     }
 });
+
 // Load verse from URL
 window.addEventListener('load', () => {
     const params = new URLSearchParams(window.location.search);
