@@ -44,7 +44,7 @@
 		<meta name="twitter:image:alt" content="0xBible Logo - Blockchain Bible Reader on Conflux eSpace">
 		<script language="javascript" type="text/javascript" src="web3.min.js"></script>
 		<script language="javascript" type="text/javascript" src="Abi.js"></script>
-		<script src="https://kit.fontawesome.com/2b9cdc1c9a.js" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 		<link rel="stylesheet" href="reader.css">
 	  </head>
 	<body>
@@ -52,25 +52,21 @@
 			<div class="header">
 				<div class="title-container">
 					<a href="/" class="title-link">
-				  		<h1>0xBible</h1>
+						<img src="images/logo.svg" alt="0xBible Logo - Blockchain Bible Reader on Conflux eSpace" class="logo">
 					</a>
-				  
 				</div>
 				<button class="hamburger-toggle" aria-label="Toggle menu">
-				  <span class="hamburger-icon"><i class="fa fa-bars"></i>
-
-				  </span> <!-- ☰ -->
-				  <span class="hamburger-close" style="display: none;">&times;</span> <!-- × -->
+					<span class="hamburger-icon"><i class="fa fa-bars"></i></span>
+					<span class="hamburger-close" style="display: none;"><i class="fa fa-times"></i></span>
 				</button>
 				<nav class="hamburger-menu">
-				  <a href="about.html">About</a>
-				  <!-- Add shop/donate later -->
+					
+					<a href="about.html">About</a>
 				</nav>
 				<div class="mode-toggle">
-				  <button id="modeSwitch" aria-label="Toggle dark mode"><i class="fa fa-moon"></i></button>
+					<button id="modeSwitch" aria-label="Toggle dark mode"><i class="fa fa-moon"></i></button>
 				</div>
-			  </div>
-	
+			</div>
 		<div class="controls">
 			<select id="bookSelect">
 				<option value="">Select Book</option>
@@ -94,5 +90,6 @@
 		</footer>
 	
 		<script src="logic.js"></script>
+		<script src="menu.js"></script>
 	</body>
 	</html>
